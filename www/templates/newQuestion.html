@@ -1,0 +1,40 @@
+<ion-modal-view>
+
+  <ion-header-bar class="bar-positive">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeNewQuestion()">Close</button>
+    </div>
+    <h1 class="title">
+      New Question
+    </h1>
+  </ion-header-bar>
+
+  <ion-content class="padding">
+
+    <div class="loginFormContainer">
+      <form name="newQuestionForm" ng-submit="doNewQuestion(newquestion)">
+
+        <label class="item-input form-item item-floating-label" ng-class="{ 'has-error' : newQuestionForm.title.$invalid && !newQuestionForm.title.$pristine && newQuestionForm.title.$touched }">
+          <span class="input-label">Title</span>
+          <input type="text" name="title" placeholder="Title" ng-model="newquestion.title" required>
+        </label>
+        <label class="item-input error-item" ng-show="newQuestionForm.title.$invalid && !newQuestionForm.title.$pristine && newQuestionForm.title.$touched && newQuestionForm.title.$error.required">Title is required.</label>
+
+
+        <div text-angular ng-model="newquestion.body" class="padding-top padding-bottom" required="true"></div>
+
+        <tags-input ng-if="state.current.name !== 'chat.channel'" type="text" placeholder="Tags" ng-model="newquestion.tags" replace-spaces-with-dashes="false" display-property="text" add-on-space="true" min-length="2"></tags-input>
+
+        <label class="item  item-borderless loginButton">
+          <button type="submit" class="button button-block button-balanced" ng-disabled="newQuestionForm.$invalid">
+            Post
+          </button>
+        </label>
+
+      </form>
+    </div>
+
+  </ion-content>
+
+</ion-modal-view>
+

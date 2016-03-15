@@ -1,0 +1,349 @@
+<!--
+<ion-view>
+  <ion-content class="padding">
+    Some content!
+
+  </ion-content>
+  <div class="chatFooter padding">
+    <div class="buttons">
+      <button class="button more-button-chat"><span class="icon ion-plus"></span></button>
+    </div>
+    <label class="item item-input message-input-chat">
+      <input type="text" placeholder="Message">
+    </label>
+  </div>
+</ion-view>
+-->
+<ion-view>
+  <ion-header-bar class="bar-subheader bar-stable" align-title="center" ng-show="activeGroup !== -1">
+    <h5 class="title">
+      <span class="icon ion-android-contacts settingsLabel" ng-class="showGroupSettings? 'activeSettings' : ''" ng-click="toggleGroupSettings()"> {{groups[activeGroup].groupName}}</span>
+      <span> > </span>
+      <span class="icon ion-android-chat settingsLabel" ng-class="showChannelSettings? 'activeSettings' : ''" ng-click="toggleChannelSettings()">{{activeChannel.channelName || '...'}}</span>
+    </h5>
+  </ion-header-bar>
+  <ion-content id="messageContent" class=" has-subheader padding" ng-class="activeChannel==null && activeGroup == -1 && showChannelSettings == false && showGroupSettings == false ? 'has-header' : ''" delegate-handle="messageScroll">
+<!--
+    <a class="gotoForum row" ng-show="activeChannel==null && activeGroup == -1 && showChannelSettings == false && showGroupSettings == false" ng-click="goToForum()">
+      <div class="col">
+        <button class="button button-positive button-large icon icon-right ion-chevron-right">
+          Go to forum
+        </button>
+      </div>
+    </a>
+-->
+    <div id="cardList" class="list" ng-show="activeChannel!=null && activeGroup != -1 && showChannelSettings == false && showGroupSettings == false">
+        <div class="list card"  ng-repeat="message in messagess" name="{{message.id}}" id="{{message.id}}" on-finish-render="messageRenderCallback">
+
+          <div class="item item-divider item-positive item-icon-right" ng-if="message.messageType == 'QUESTION'">
+            <span class="ion-help-circled"></span>
+            QUESTION
+            <span class="icon ion-android-share" ng-if="message.user.id === userid && !message.publish" ng-click="shareQuestion(message)"></span>
+          </div>
+
+          <div class="item item-avatar">
+            <!--
+            <img
+              ng-src="http://placehold.it/50/{{(window.localStorage.getItem('userid')!=message.user.id)?'55C1E7':'FA6F57'}}/fff&text={{message.user.username | limitTo:2 | uppercase }}"
+              alt="User Avatar" class="img-circle"/>
+              -->
+            <img ng-src="http://www.gravatar.com/avatar/{{getHash(message.user.mail)}}?s=30&d=identicon"
+                 alt="User Avatar" xclass="img-circle"/>
+            <h2>
+              <strong>
+                @{{message.user.username}}
+              </strong>
+            </h2>
+            <small>
+              <span am-time-ago="message.date"></span>
+            </small>
+          </div>
+
+
+          <div class="item item-text-wrap" ng-if="message.messageType == 'TEXT' && message.user.mail !== 'internalUser@localhost'">
+            {{message.text}}
+          </div>
+
+          <!-- NEW -->
+
+          <div class="item item-text-wrap" ng-if="message.messageType == 'URL'">
+
+
+
+            <div class="item item-button-right">
+              <a ng-init="getMetaTags(message, $index)" ng-click="loadUrl(message.text)">
+                {{message.text}}
+              </a>
+              <!-- ng-click="window.open('{{message.text}}', '_system', 'location=yes'); return false; -->
+              <button class="button button-clear button-stable" ng-click="changeVisible($index)">
+                <i class="icon ion-android-arrow-dropdown-circle"></i>
+              </button>
+            </div>
+            <!--<div class="metadatalinks" ng-if="message.visible" ng-bind-html="listaMensajes[$index].response_data_url">
+            </div>-->
+
+            <div ng-if="message.visible" class="item item-text-wrap metadatalinks" >
+              <span ng-if="message.visible" ng-bind-html="messagess[$index].response_data_url"></span>
+            </div>
+
+
+
+
+          </div>
+
+
+
+
+
+          <div class="item item-text-wrap" ng-if="message.messageType == 'TEXT' && message.text.indexOf('internalMessage#') == 0">
+            <span bind-html-compile="getInternalMessage($index)"></span>
+          </div>
+
+          <div class="item item-text-wrap" ng-if="message.messageType == 'FILE'">
+            {{message.text}}
+            <a href="#" ng-click="getDownloadLink(message.filename, $event, message.user.id)">
+              <span class="icon ion-document-text" style="font-size: 30px;"></span> {{message.filename}}
+            </a>
+          </div>
+
+          <div class="item item-text-wrap" data-ng-bind-html="trustAsHtml(message.text)" ng-if="message.messageType == 'QUESTION'"></div>
+
+          <div class="item item-divider item-positive" ng-if="message.messageType == 'QUESTION'">
+            ANSWERS
+          </div>
+
+          <div ng-if="message.messageType == 'QUESTION'">
+            <div ng-repeat="answer in message.answers" class="item item-text-wrap">
+              <div data-ng-bind-html="trustAsHtml(answer.text)"></div>
+              <div class="answerCreated">
+                On {{answer.date | amDateFormat:'YYYY-MM-DD HH:mm:ss'}} by {{answer.user.username}}
+              </div>
+            </div>
+          </div>
+
+          <div class="item item-divider item-balanced" ng-if="message.messageType == 'QUESTION'" ng-click="answer(message.id)">
+            <span class="icon ion-plus-circled"></span>
+            ADD NEW ANSWER
+          </div>
+        </div>
+    </div>
+
+    <!-- Group Settings -->
+
+    <div class="list" ng-show="showGroupSettings == true && activeGroup != -1">
+      <div class="list card">
+        <div class="item dark-bg">
+          <h2 style="color: white;">
+          <span class="icon ion-gear-b"></span>
+          <strong>
+            Group Settings
+          </strong>
+          </h2>
+        </div>
+      </div>
+
+      <div class="list card">
+        <div class="item item-button-right"  ng-if="userid == groups[activeGroup].admin.id">
+          <label class="item-input ">
+            <i class="icon ion-edit placeholder-icon"></i>
+            <input type="text" id="settingsNameInput" name="settingsInput" placeholder="Group Name" value={{groups[activeGroup].groupName}} ng-focus="showSettingsNameButtons = true" ng-blur="showSettingsNameButtons = false" style="font-weight: bold;">
+
+          </label>
+          <div class="item item-borderless buttons settingsNameButton" ng-show="showSettingsNameButtons">
+            <button class="button button-clear icon ion-checkmark-round button-balanced" ng-click="updateGroupName()">
+            </button>
+            <button class="button button-clear icon ion-close-round button-assertive" ng-click="cancelNameInput()">
+            </button>
+          </div>
+
+        </div>
+
+        <div class="item"  ng-if="userid != groups[activeGroup].admin.id">
+          <strong>
+          {{groups[activeGroup].groupName}}
+          </strong>
+        </div>
+      </div>
+
+      <button class="button button-block button-assertive" ng-click="leaveGroupConfirm()">
+        Leave {{groups[activeGroup].groupName}}
+      </button>
+
+      <button class="button button-block button-assertive" ng-click="deleteGroupConfirm()" ng-if="userid == groups[activeGroup].admin.id">
+        Delete {{groups[activeGroup].groupName}}
+      </button>
+
+      <div id="membersCard" class="list card">
+        <div class="item item-icon-right" ng-click="showSettingsMembers = !showSettingsMembers; memberCardStyle();" style="z-index: 3;">
+          <h2>
+            <strong>
+              Members
+            </strong>
+            <span class="icon ion-android-arrow-dropright-circle" ng-show="!showSettingsMembers"></span>
+            <span class="icon ion-android-arrow-dropdown-circle" ng-show="showSettingsMembers"></span>
+          </h2>
+        </div>
+
+
+
+        <div class="item scroll membersContent" ng-show="showSettingsMembers">
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <i class="icon ion-ios-search placeholder-icon"></i>
+              <input type="search" placeholder="Search" ng-model="searchText">
+            </label>
+            <button ng-if="userid == groups[activeGroup].admin.id" class="button button-balanced  button-clear" ng-click="search()">
+              Invite Users
+            </button>
+          </div>
+          <ion-list>
+          <div ng-repeat="user in groups[activeGroup].users | filter:searchText">
+            <ion-item class="item item-avatar">
+              <!--
+              <img
+                ng-src="http://placehold.it/50/{{(window.localStorage.getItem('userid')!=message.user.id)?'55C1E7':'FA6F57'}}/fff&text={{user.username | limitTo:2 | uppercase }}"
+                alt="User Avatar" class="img-circle"/>
+                -->
+              <img ng-src="http://www.gravatar.com/avatar/{{getHash(user.mail)}}?s=30&d=identicon"
+                   alt="User Avatar" xclass="img-circle"/>
+              <div class="row">
+                <h2 class="col-90" ng-bind-html="highlight(user.username, searchText)">@{{user.username}}</h2>
+                <small class="col-10 assertive" ng-show="user.id == groups[activeGroup].admin.id">Admin</small>
+              </div>
+              <p ng-bind-html="highlight(user.mail, searchText)">{{user.mail}}</p>
+              <ion-option-button class="button-assertive" ng-if="userid == groups[activeGroup].admin.id && user.id != userid" ng-click="expelUser(user)">Eject</ion-option-button>
+            </ion-item>
+          </div>
+          </ion-list>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Channel Settings -->
+
+    <div class="list" ng-show="activeChannel != null && activeGroup != -1 && showChannelSettings === true">
+      <div class="list card">
+        <div class="item dark-bg">
+          <h2 style="color: white;">
+            <span class="icon ion-gear-b"></span>
+            <strong>
+              Channel Settings
+            </strong>
+          </h2>
+        </div>
+      </div>
+
+      <div class="list card">
+        <div class="item item-button-right"  ng-if="userid == activeChannel.admin.id">
+          <label class="item-input ">
+            <i class="icon ion-edit placeholder-icon"></i>
+            <input type="text" id="channelSettingsNameInput" name="settingsInput" placeholder="Channel Name" value={{activeChannel.channelName}} ng-focus="showSettingsNameButtons = true" ng-blur="showSettingsNameButtons = false" style="font-weight: bold;">
+
+          </label>
+          <div class="item item-borderless buttons settingsNameButton" ng-show="showSettingsNameButtons">
+            <button class="button button-clear icon ion-checkmark-round button-balanced" ng-click="updateChannelName()">
+            </button>
+            <button class="button button-clear icon ion-close-round button-assertive" ng-click="cancelChannelNameInput()">
+            </button>
+          </div>
+
+        </div>
+
+        <div class="item"  ng-if="userid != activeChannel.admin.id">
+          <strong>
+            {{activeChannel.channelName}}
+          </strong>
+        </div>
+      </div>
+
+      <button class="button button-block button-assertive"  ng-if="activeChannel.type === 'private' && activeChannel.admin.id != userid" ng-click="leaveChannelConfirm()">
+        Leave {{activeChannel.channelName}}
+      </button>
+
+      <button class="button button-block button-assertive" ng-click="deleteChannelConfirm()" ng-if="activeChannel.admin.id == userid">
+        Delete {{activeChannel.channelName}}
+      </button>
+
+      <div id="channelMembersCard" class="list card" ng-if="activeChannel.type === 'private'">
+        <div class="item item-icon-right" ng-click="showSettingsMembers = !showSettingsMembers; channelMemberCardStyle();" style="z-index: 3;">
+          <h2>
+            <strong>
+              Members
+            </strong>
+            <span class="icon ion-android-arrow-dropright-circle" ng-show="!showSettingsMembers"></span>
+            <span class="icon ion-android-arrow-dropdown-circle" ng-show="showSettingsMembers"></span>
+          </h2>
+        </div>
+
+
+
+        <div class="item scroll membersContent" ng-show="showSettingsMembers">
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <i class="icon ion-ios-search placeholder-icon"></i>
+              <input type="search" placeholder="Search" ng-model="searchText">
+            </label>
+            <button ng-if="userid == activeChannel.admin.id" class="button button-balanced  button-clear" ng-click="search()">
+              Invite Users
+            </button>
+          </div>
+          <ion-list>
+            <div ng-repeat="user in activeChannel.users | filter:searchText">
+              <ion-item class="item item-avatar">
+                <!--
+                <img
+                  ng-src="http://placehold.it/50/{{(window.localStorage.getItem('userid')!=message.user.id)?'55C1E7':'FA6F57'}}/fff&text={{user.username | limitTo:2 | uppercase }}"
+                  alt="User Avatar" class="img-circle"/>
+                  -->
+                <img ng-src="http://www.gravatar.com/avatar/{{getHash(user.mail)}}?s=30&d=identicon"
+                     alt="User Avatar" xclass="img-circle"/>
+                <div class="row">
+                  <h2 class="col-90" ng-bind-html="highlight(user.username, searchText)">@{{user.username}}</h2>
+                  <small class="col-10 assertive" ng-show="activeChannel.admin.id == user.id">Admin</small>
+                </div>
+                <p ng-bind-html="highlight(user.mail, searchText)">{{user.mail}}</p>
+                <ion-option-button class="button-assertive" ng-if="activeChannel.admin.id == userid && user.id != userid" ng-click="expelUserFromChannel(user)">Eject</ion-option-button>
+              </ion-item>
+            </div>
+          </ion-list>
+        </div>
+      </div>
+
+    </div>
+
+  </ion-content>
+  <!--
+  <ion-footer-bar align-title="left" class="bar-stable">
+    <div class="buttons button-chat">
+      <button class="button icon ion-plus more-button-chat"></button>
+    </div>
+    <label class="item item-input message-input-chat">
+      <input type="text" placeholder="Message">
+    </label>
+    <div class="buttons button-chat">
+      <button class="button button-clear button-positive"><strong>Send</strong></button>
+    </div>
+  </ion-footer-bar>
+  -->
+  <!--
+  <div class="bar bar-footer bar-stable item-input-inset footer-item-input-insert">
+  -->
+  <ion-footer-bar class="bar-stable item-input-inset footer-item-input-insert">
+    <div class="buttons">
+    <button class=" button button-small button-balanced" ng-click="showActionSheet()">
+      <i class="icon ion-plus"></i>
+    </button>
+    </div>
+    <label class="item-input-wrapper">
+      <input type="text" placeholder="Type your message here..." ng-model="text">
+    </label>
+    <button class="button button-clear button-positive" ng-show="activeChannel!=null && activeGroup != -1 && showChannelSettings == false && showGroupSettings == false && text != ''" ng-click="sendText(text); text='';">
+      <strong>Send</strong>
+    </button>
+    <input type="file" class="file" file="file" upload-fn="confirmUploadFile()"/>
+  </ion-footer-bar>
+  <!--
+  </div>
+  -->
+</ion-view>

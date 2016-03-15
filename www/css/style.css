@@ -1,0 +1,589 @@
+/* Empty. Add your own CSS if you like */
+.backgroundGradient {
+  background: rgba(82,255,171,1);
+  background: -moz-linear-gradient(top, rgba(82,255,171,1) 10%, rgba(64,232,192,1) 98%, rgba(64,231,192,1) 100%);
+  /*
+  background: -webkit-gradient(left top, left bottom, color-stop(10%, rgba(82,255,171,1)), color-stop(98%, rgba(64,232,192,1)), color-stop(100%, rgba(64,231,192,1)));
+  */
+  background: -webkit-linear-gradient(top, rgba(82,255,171,1) 10%, rgba(64,232,192,1) 98%, rgba(64,231,192,1) 100%);
+  background: -o-linear-gradient(top, rgba(82,255,171,1) 10%, rgba(64,232,192,1) 98%, rgba(64,231,192,1) 100%);
+  background: -ms-linear-gradient(top, rgba(82,255,171,1) 10%, rgba(64,232,192,1) 98%, rgba(64,231,192,1) 100%);
+  background: linear-gradient(to bottom, rgba(82,255,171,1) 10%, rgba(64,232,192,1) 98%, rgba(64,231,192,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#52ffab', endColorstr='#40e7c0', GradientType=0 );
+}
+
+
+.card .item:last-child a {
+  color: cornflowerblue;
+
+}
+
+/*.card .item:last-child a:hover,
+.card .item:last-child a:focus {
+  text-decoration: none;
+  font-weight:bolder;
+  cursor: pointer;
+}*/
+
+
+
+
+.item-button-right {
+  padding-left:0;
+  padding-right: 3.5em;
+
+}
+
+.card .item:last-child .metadatalinks{
+
+  border-left-width: 0.5em;
+  border-left-style:solid;
+  border-left-color: lavender;
+
+}
+
+
+.card .item:last-child .metadatalinks iframe{
+
+  width: 100%;
+  height: 100%;
+
+}
+
+
+.card .item:last-child .metadatalinks img{
+
+  width: 50%;
+  height: 50%;
+
+}
+
+
+
+
+.titleContainer {
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  color: white;
+}
+
+.title-image {
+  margin-top:5px;
+}
+
+.error-item {
+  color:red;
+}
+
+.item-divider-principal {
+  background-color: #9900CC;
+  color: white;
+}
+
+.item-divider-invitations {
+
+}
+
+.list {
+  padding: 0;
+}
+
+/* Login */
+
+.form-item {
+  border-bottom: 1px solid grey;
+  margin-bottom: 1px;
+}
+
+.loginButton {
+  padding-bottom: 0;
+}
+/*
+.loginButtonItem {
+  border-top: 1px solid grey;
+}
+*/
+
+/* Portrait */
+@media screen
+and (max-device-height: 640px)
+and (orientation: portrait) {
+
+  .imageContainer {
+    margin: 10% auto;
+  }
+
+
+  .botonesContainer {
+    padding-top:20%;
+  }
+
+  /* Login */
+
+  /*
+  .loginFormContainer {
+    margin-top: 10%;
+  }
+*/
+}
+
+/* Chat */
+
+.groups.ng-hide {
+  line-height: 0px;
+
+  /* Set our transitions up. */
+
+}
+
+.groups {
+  line-height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.1s all linear;
+}
+
+.channels.ng-hide {
+  line-height: 0px;
+
+  /* Set our transitions up. */
+
+}
+
+.channels {
+  line-height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.1s all linear;
+}
+
+.users.ng-hide {
+  line-height: 0px;
+
+  /* Set our transitions up. */
+
+}
+
+.users {
+  line-height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.1s all linear;
+}
+
+.chatFooter {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+}
+
+.message-input-chat {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.more-button-chat {
+  border: none;
+}
+
+.button-chat {
+  /*margin: 0 10px;*/
+}
+
+#rightBarContent > .scroll {
+  height: 100%;
+}
+
+#menuList > .list {
+  height: 100%;
+  text-align: center;
+}
+
+.row {
+  margin-top: 0px;
+}
+
+.row + .row {
+  margin-top: 0px;
+}
+
+#messageContent {
+  background-color: linen;
+}
+
+/* Settings */
+
+.settingsNameButton {
+  animation: slideLeft 1s forwards;
+}
+
+.settingsNameButton.ng-hide {
+  animation: slideRight 1s forwards;
+}
+
+@keyframes slideLeft {
+  0% {left: 100%;}
+  100% { left: 80%; }
+}
+
+@keyframes slideRight {
+  0% {left: 80%;}
+  100% { left: 100%; }
+}
+
+.membersContent {
+  animation: slideDown 1s forwards;
+}
+
+.membersContent.ng-hide {
+  animation: slideUp 1s forwards;
+}
+
+@keyframes slideDown {
+  0% {transform: translateY(-100%);
+    height: 0;}
+  100% { transform: translateY(0);
+    height: 100%;}
+}
+
+@keyframes slideUp {
+  0% {transform: translateY(0);
+    height: 100%;}
+  100% { transform: translateY(-100%);
+    height: 0; }
+}
+
+.highlightedText {
+  background: yellow;
+}
+
+.invitations.ng-hide {
+  line-height: 0px;
+
+  /* Set our transitions up. */
+
+}
+
+.invitations {
+  line-height: 100%;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: 0.1s all linear;
+}
+
+@media screen
+and (min-device-height: 641px)
+and (orientation: portrait) {
+
+  .imageContainer {
+    margin: 20% auto;
+    margin-bottom: 3%;
+  }
+
+
+  .botonesContainer {
+    padding-top:30%;
+  }
+
+  /* Login */
+  /*
+  .loginFormContainer {
+    margin-top: 20%;
+  }
+*/
+}
+
+
+/* Tiene que ir al final */
+.has-error {
+  border-bottom: 1px solid red;
+}
+
+
+/* FORO */
+
+.questiontitle {
+  text-transform: uppercase;
+}
+
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+.votesPrincipal, .answers, .views {
+  display: inline-block;
+  margin: 0 2px;
+}
+
+p {
+  font-family: lora;
+  font-size: 1.1em;
+}
+
+.time {
+  text-align: right;
+}
+
+.time span {
+  padding: 2px;
+}
+.pull-right {
+  float: right !important;
+}
+.text-muted {
+  color: #777;
+}
+
+.tags {
+  line-height: 18px;
+  width: 100%;
+  text-align: left;
+}
+
+.tags a {
+  border: 1px solid #e1ecf4;
+  display: inline-block;
+  margin: 2px 2px 2px 0;
+}
+
+.tags a:hover,.questiontitle a:hover
+{
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.label-info {
+  background-color: #5bc0de;
+}
+
+.label {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+}
+
+/* Question detail */
+.votes {
+  font-size: 1.5rem;
+  text-align: center;
+  width: 100%;
+  display: inline-block;
+  margin: 0 2px;
+}
+
+.votesButton {
+  width: 100%;
+}
+
+.answer {
+  border-bottom: 1px solid #ddd;
+}
+
+.ta-bind {
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+}
+
+.ta-toolbar {
+  text-align: center;
+}
+/*
+html,body{
+  -webkit-user-select: none;
+  -webkit-touch-callout: none !important;
+}
+*/
+*[contenteditable] {
+  -webkit-user-select: text !important;
+}
+
+.bindedBody * {
+  width: inherit !important;
+}
+
+.toggle-middle {
+  vertical-align: middle;
+}
+
+.toggle input + .track{
+  background-color: #ef473a;
+  border-color: #ef473a;
+}
+
+.inactiveTitle {
+  color: cornflowerblue;
+}
+
+
+/* Importante para los header en android */
+.bar-header {
+  border: 0 !important;
+}
+
+.answerCreated {
+  text-align: right;
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+.file {
+  display: none;
+}
+
+/* Notifications */
+
+span[id$='badge'].shake {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+
+/* Nuevos Estilos */
+
+@font-face{
+  font-family: Oswald;
+  src: url('../fonts/Oswald-Regular.ttf');
+}
+
+body {
+  font-family: 'Oswald', sans-serif;
+}
+
+.homeView {
+  background: rgba(0, 0, 0, 0) !important;
+}
+
+video#bgvid {
+
+  position: fixed;
+  right: 0;
+  bottom: 0;
+
+  min-width: 100%;
+  min-height: 100%;
+
+  width: auto;
+  height: auto;
+  z-index: -100;
+
+  /*background: url(polina.jpg) no-repeat;*/
+
+  background-size: cover;
+}
+
+#filter{
+  position: fixed;
+  top:0px;
+  left:0px;
+  z-index: -8;
+  width: 100%;
+  min-height: 100%;
+  background: rgba(0, 37, 128, 0.5);
+  background-image: url('../img/patern.png');
+
+}
+
+.wrapper{
+  position: absolute;
+  width:100%;
+}
+
+.titleContainer h1 {
+  font-family: 'Oswald', sans-serif;
+  color: #163B5A;
+}
+
+.sideItem {
+  background-color: transparent;
+  color: white;
+  border-bottom: 0;
+  border-top: 0;
+}
+
+.settingsLabel.activeSettings {
+  background-color: lightblue;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-transition: background-color 1s linear, border-radius 1s linear;
+  -moz-transition: background-color 1s, border-radius 1s linear;
+  -ms-transition: background-color 1s, border-radius 1s linear;
+  -o-transition: background-color 1s, border-radius 1s linear;
+  transition: background-color 1s, border-radius 1s linear;
+}
+
+.settingsLabel {
+  background-color: inherit;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-transition: background-color 1s linear, border-radius 1s linear;
+  -moz-transition: background-color 1s, border-radius 1s linear;
+  -ms-transition: background-color 1s, border-radius 1s linear;
+  -o-transition: background-color 1s, border-radius 1s linear;
+  transition: background-color 1s, border-radius 1s linear;
+}
+
+.sideLogo {
+  padding: 5vw;
+}
+
+.sideLogoImg {
+  margin: auto auto;
+  width: 100%;
+  height: 100%;
+}
+
+.sideUserName {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggleTitleRight {
+  margin-left: 2vw;
+}
+
+.toggleTitleLeft {
+  margin-right: 2vw;
+}
+
+.sideUserNameMain {
+  font-size: 100%;
+}
+
+.activeTile {
+  background: #219161;
+}

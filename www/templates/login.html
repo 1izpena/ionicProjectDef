@@ -1,0 +1,99 @@
+
+<!--
+<ion-modal-view>
+
+  <ion-header-bar class="bar-balanced" align-title="center">
+    <div class="buttons">
+      <button class="button button-clear button-positive" ng-click="closeLogin()">Close</button>
+    </div>
+    <h1 class="title"><img class="title-image" src="img/meanstack-logo.png" width="34" height="34" /></h1>
+  </ion-header-bar>
+
+  <ion-content class="padding">
+    <div class="loginFormContainer">
+      <div class="titleContainer">
+        <h1>Log in</h1>
+      </div>
+      <form name="loginForm" ng-submit="doLogin(user)">
+
+        <label class="item-input form-item item-floating-label" ng-class="{ 'has-error' : loginForm.mail.$invalid && !loginForm.mail.$pristine && loginForm.mail.$touched }">
+          <span class="input-label">Email</span>
+          <input type="text" name="mail" placeholder="Email" ng-model="user.mail" pattern="[a-z0-9\_\-\.]+@[a-z0-9]+\.[a-z]+" required>
+        </label>
+        <label class="item-input error-item" ng-show="loginForm.mail.$invalid && !loginForm.mail.$pristine && loginForm.mail.$touched && loginForm.mail.$error.required">Email is required.</label>
+        <label class="item-input error-item" ng-show="loginForm.mail.$invalid && !loginForm.mail.$pristine && loginForm.mail.$touched && loginForm.mail.$error.pattern">Email does not match pattern.</label>
+
+        <label class="item-input form-item item-floating-label" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
+          <span class="input-label">Password</span>
+          <input type="password" name="password" placeholder="Password" ng-model="user.password" required>
+        </label>
+        <label class="item-input error-item" ng-show="loginForm.password.$invalid && !loginForm.password.$pristine && loginForm.password.$error.required">Password is required.</label>
+
+        <label class="item  item-borderless loginButton">
+          <button type="submit" class="button button-block button-positive" ng-disabled="loginForm.$invalid">
+            Log in
+          </button>
+        </label>
+
+      </form>
+      <button type="button" class="button button-clear button-positive button-block" ng-click="forgotPassword()">
+        Forgot Password
+      </button>
+    </div>
+  </ion-content>
+
+</ion-modal-view>
+-->
+
+<ion-modal-view>
+
+  <ion-header-bar class="bar-clear" align-title="center">
+    <div class="buttons">
+      <button class="button button-icon ion-close-round" ng-click="closeLogin()"></button>
+    </div>
+    <h1 class="title"><img class="title-image" src="img/meanstack-logo.png" width="34" height="34" /></h1>
+  </ion-header-bar>
+
+  <div id="filter"> </div>
+
+  <ion-content>
+
+    <div class="card">
+
+      <div class="loginFormContainer padding">
+        <div class="titleContainer">
+          <h1>Login</h1>
+        </div>
+        <form name="loginForm" class="padding" ng-submit="doLogin(user)">
+
+          <label class="item-input form-item item-floating-label" ng-class="{ 'has-error' : loginForm.mail.$invalid && !loginForm.mail.$pristine && loginForm.mail.$touched }">
+            <span class="input-label">Email</span>
+            <input type="text" name="mail" placeholder="Email" ng-model="user.mail" pattern="[a-z0-9\_\-\.]+@[a-z0-9]+\.[a-z]+" required>
+          </label>
+          <label class="item-input error-item" ng-show="loginForm.mail.$invalid && !loginForm.mail.$pristine && loginForm.mail.$touched && loginForm.mail.$error.required">Email is required.</label>
+          <label class="item-input error-item" ng-show="loginForm.mail.$invalid && !loginForm.mail.$pristine && loginForm.mail.$touched && loginForm.mail.$error.pattern">Email does not match pattern.</label>
+
+          <label class="item-input form-item item-floating-label" ng-class="{ 'has-error' : loginForm.password.$invalid && !loginForm.password.$pristine }">
+            <span class="input-label">Password</span>
+            <input type="password" name="password" placeholder="Password" ng-model="user.password" required>
+          </label>
+          <label class="item-input error-item" ng-show="loginForm.password.$invalid && !loginForm.password.$pristine && loginForm.password.$error.required">Password is required.</label>
+
+          <label class="item  item-borderless loginButton">
+            <button type="submit" class="button button-block button-positive" ng-disabled="loginForm.$invalid">
+              Log in
+            </button>
+          </label>
+
+        </form>
+        <button type="button" class="button button-clear button-positive button-block" ng-click="forgotPassword()">
+          Forgot Password?
+        </button>
+      </div>
+
+    </div>
+
+  </ion-content>
+
+
+</ion-modal-view>

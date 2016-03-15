@@ -1,0 +1,112 @@
+<ion-modal-view>
+
+  <ion-header-bar class="bar-positive has-tabs-top" align-title="center">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeSearch()">Close</button>
+    </div>
+    <h1 class="title">Invite Users</h1>
+  </ion-header-bar>
+
+  <!--
+  <div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+    <div class="tabs">
+      <a class="tab-item active" href="#">
+        System Users
+      </a>
+      <a class="tab-item" href="#">
+        Outside Users
+      </a>
+    </div>
+  </div>
+-->
+  <ion-tabs class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+
+    <ion-tab title="System Users" ng-if="showChannelSettings === false" ng-click="toggleSystemUsers(true)">
+    </ion-tab>
+
+    <ion-tab title="Group Users" ng-if="showChannelSettings === true" ng-click="toggleSystemUsers(true)">
+    </ion-tab>
+
+    <ion-tab ng-if="showChannelSettings === false" title="Outside Users" ng-click="toggleSystemUsers(false)">
+      <!-- Tab 2 content -->
+    </ion-tab>
+
+  </ion-tabs>
+
+  <ion-content class="has-subheader">
+
+    <!-- System Users -->
+    <div class="list" ng-if="showChannelSettings === false" ng-show="showSystemUsers === true">
+
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search Users" ng-model="searchTextModal">
+      </label>
+
+      <ion-item class="item item-avatar item-icon-right" ng-repeat="user in systemUsers | filter:searchTextModal">
+        <!--
+        <img
+          ng-src="http://placehold.it/50/{{(window.localStorage.getItem('userid')!=message.user.id)?'55C1E7':'FA6F57'}}/fff&text={{user.username | limitTo:2 | uppercase }}"
+          alt="User Avatar" class="img-circle"/>
+          -->
+        <img ng-src="http://www.gravatar.com/avatar/{{getHash(user.mail)}}?s=30&d=identicon"
+             alt="User Avatar" xclass="img-circle"/>
+        <div class="row">
+          <h2 class="col-90" ng-bind-html="highlight(user.username, searchTextModal)">@{{user.username}}</h2>
+        </div>
+        <p ng-bind-html="highlight(user.mail, searchTextModal)">{{user.mail}}</p>
+        <span class="icon ion-person-add positive" ng-if="!isInGroup(user)" ng-click="inviteUser(user)"></span>
+      </ion-item>
+    </div>
+
+    <!-- Group Users -->
+    <div class="list" ng-if="showChannelSettings === true" ng-show="showSystemUsers === true">
+
+      <label class="item item-input">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input type="text" placeholder="Search Users" ng-model="searchTextModal">
+      </label>
+
+      <ion-item class="item item-avatar item-icon-right" ng-repeat="user in groups[activeGroup].users | filter:searchTextModal">
+        <!--
+        <img
+          ng-src="http://placehold.it/50/{{(window.localStorage.getItem('userid')!=message.user.id)?'55C1E7':'FA6F57'}}/fff&text={{user.username | limitTo:2 | uppercase }}"
+          alt="User Avatar" class="img-circle"/>
+          -->
+        <img ng-src="http://www.gravatar.com/avatar/{{getHash(user.mail)}}?s=30&d=identicon"
+             alt="User Avatar" xclass="img-circle"/>
+        <div class="row">
+          <h2 class="col-90" ng-bind-html="highlight(user.username, searchTextModal)">@{{user.username}}</h2>
+        </div>
+        <p ng-bind-html="highlight(user.mail, searchTextModal)">{{user.mail}}</p>
+        <span class="icon ion-person-add positive" ng-if="!isInChannel(user)" ng-click="inviteUserToChannel(user)"></span>
+      </ion-item>
+    </div>
+
+    <div ng-show="showSystemUsers === false" class="" style="text-align: center">
+        <div class="">
+          <div class="card padding">
+            <h4 class="item item-borderless">Introduce user´s email to send an invitation</h4>
+            <!--
+            <label class="item item-borderless item-input item-floating-label" ng-class="{ 'has-error' : loginForm.mail.$invalid && !loginForm.mail.$pristine && loginForm.mail.$touched }">
+              <span class="input-label">Email</span>
+              <input type="text" name="mail" placeholder="Email" ng-model="mail" pattern="[a-z0-9\_\-\.]+@[a-z0-9]+\.[a-z]+" required>
+            </label>
+            -->
+            <div class="list list-inset row">
+              <label class=" item-input col-66 col-offset-20">
+                <i class="icon ion-android-mail placeholder-icon"></i>
+                <input type="email" ng-model="user.mail" name="mail" placeholder="Mail">
+              </label>
+            </div>
+            <button class="button button-block button-balanced" ng-click="inviteUser(user)">
+              Send Invitation
+            </button>
+          </div>
+        </div>
+    </div>
+
+  </ion-content>
+
+
+</ion-modal-view>

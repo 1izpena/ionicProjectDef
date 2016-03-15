@@ -1,0 +1,48 @@
+<ion-modal-view>
+
+  <ion-header-bar align-title="center" class="bar-clear">
+    <div class="buttons">
+      <button class="button button-icon ion-close-round" ng-click="closeSignup()"></button>
+    </div>
+    <h1 class="title"><img class="title-image" src="img/meanstack-logo.png" width="34" height="34" /></h1>
+  </ion-header-bar>
+
+  <div id="filter"></div>
+
+  <ion-content class="padding">
+    <div class="card">
+      <div class="loginFormContainer padding">
+        <div class="titleContainer">
+          <h1>Sign up</h1>
+        </div>
+        <form name="signupForm" class="padding" ng-submit="doSignup(user)">
+          <label class="item-input form-item item-floating-label" ng-class="{ 'has-error' : signupForm.mail.$invalid && !signupForm.mail.$pristine && signupForm.mail.$touched }">
+            <span class="input-label">Email</span>
+            <input type="email" name="mail" placeholder="Email" ng-model="user.mail" pattern="[a-z0-9\_\-\.]+@[a-z0-9]+\.[a-z]+" required>
+          </label>
+          <label class="item-input error-item" ng-show="signupForm.mail.$invalid && !signupForm.mail.$pristine && signupForm.mail.$touched && signupForm.mail.$error.required">Email is required.</label>
+          <label class="item-input error-item" ng-show="signupForm.mail.$invalid && !signupForm.mail.$pristine && signupForm.mail.$touched && signupForm.mail.$error.pattern">Email does not match pattern.</label>
+
+          <label class="item-input form-item item-floating-label"  ng-class="{ 'has-error' : signupForm.username.$invalid && !signupForm.username.$pristine }">
+            <span class="input-label">Username</span>
+            <input type="text" name="username" placeholder="Username" ng-model="user.username" required>
+          </label>
+          <label class="item-input error-item" ng-show="signupForm.username.$invalid && !signupForm.username.$pristine && signupForm.username.$error.required">Username is required.</label>
+
+          <label class="item-input form-item item-floating-label"  ng-class="{ 'has-error' : signupForm.password.$invalid && !signupForm.password.$pristine }">
+            <span class="input-label">Password</span>
+            <input type="password" name="password" placeholder="Password" ng-model="user.password" required>
+          </label>
+          <label class="item-input error-item" ng-show="signupForm.password.$invalid && !signupForm.password.$pristine && signupForm.password.$error.required">Password is required.</label>
+
+          <label class="item  item-borderless">
+            <button type="submit" class="button button-block button-positive" ng-disabled="signupForm.$invalid">
+              Sign up
+            </button>
+          </label>
+        </form>
+      </div>
+    </div>
+  </ion-content>
+
+</ion-modal-view>

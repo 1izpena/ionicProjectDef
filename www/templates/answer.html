@@ -1,0 +1,40 @@
+<ion-modal-view>
+
+  <ion-header-bar class="bar-positive">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeAnswer()">Close</button>
+    </div>
+    <h1 class="title">
+      Answer
+    </h1>
+  </ion-header-bar>
+
+  <ion-content class="padding">
+
+    <div class="loginFormContainer">
+      <form name="answerForm" ng-submit="doAnswer(answer)">
+
+        <div class="card">
+          <div class="item item-divider item-text-wrap">
+            YOUR ANSWER
+          </div>
+          <div class="padding">
+            <div text-angular ng-model="answer.body" required="true"></div>
+            <button type="submit" class="button button-block button-balanced" ng-disabled="answerForm.$invalid">
+              Post
+            </button>
+          </div>
+        </div>
+        <!--
+        <label class="item  item-borderless loginButton">
+          <button type="submit" class="button button-block button-balanced" ng-disabled="answerForm.$invalid">
+            Post
+          </button>
+        </label>
+-->
+      </form>
+    </div>
+
+  </ion-content>
+
+</ion-modal-view>

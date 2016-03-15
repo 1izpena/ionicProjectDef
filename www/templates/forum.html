@@ -1,0 +1,169 @@
+<!--
+<ion-view>
+
+  <ion-header-bar class="bar-positive" align-title="center">
+    <h1 class="title">
+      Forum
+      <label class="toggle toggle-calm toggle-middle" ng-click="gotoChat($event);">
+        <input type="checkbox" value="off">
+        <div class="track">
+          <div class="handle"></div>
+        </div>
+      </label>
+      <span class="inactiveTitle">
+        Chat
+      </span>
+    </h1>
+    <div class="buttons">
+      <button class="button button-small button-balanced icon ion-plus-round" ng-click="newQuestion()">Question</button>
+    </div>
+  </ion-header-bar>
+
+  <ion-tabs class="tabs-striped tabs-top tabs-background-positive tabs-color-light tabs-icon-top">
+
+    <ion-tab title="Latest" icon="ion-ios-clock" href="/forum/latest">
+      <ion-nav-view name="latest-tab"></ion-nav-view>
+    </ion-tab>
+
+    <ion-tab title="Most viewed" icon="ion-eye" href="/forum/mostviewed">
+      <ion-nav-view name="mostViewed-tab"></ion-nav-view>
+    </ion-tab>
+
+    <ion-tab title="Most voted" icon="ion-thumbsup" href="/forum/mostvoted">
+      <ion-nav-view name="mostVoted-tab"></ion-nav-view>
+    </ion-tab>
+
+  </ion-tabs>
+
+  <ion-content>
+    <div>
+
+    </div>
+  </ion-content>
+
+</ion-view>
+-->
+
+<ion-view>
+
+  <ion-side-menus enable-menu-with-back-views="false">
+
+    <ion-side-menu-content>
+
+      <ion-nav-bar class="bar-calm" align-title="center">
+        <ion-nav-back-button>
+        </ion-nav-back-button>
+
+        <ion-nav-buttons side="left">
+          <button menu-toggle="left" class="button button-icon icon"><img src="img/meanstack-logo.png" width="30" height="30" /></button>
+        </ion-nav-buttons>
+
+        <ion-nav-title>
+          <h1 class="title">
+            Forum
+          </h1>
+          <div class="buttons">
+            <button class="button button-icon icon ion-search" ng-click="globalSearch()"></button>
+          </div>
+        </ion-nav-title>
+
+      </ion-nav-bar>
+
+      <ion-nav-view name="latest-tab">
+
+      </ion-nav-view>
+
+      <ion-nav-view name="mostViewed-tab">
+
+      </ion-nav-view>
+
+      <ion-nav-view name="mostVoted-tab">
+
+      </ion-nav-view>
+
+    </ion-side-menu-content>
+
+    <ion-side-menu side="left">
+
+      <div id="filter"></div>
+      <!--
+      <ion-header-bar class="bar-clear">
+
+        <h1 class="title">
+          <img src="img/full-white-mini.png" width="180" height="60"/> <br>
+          {{username}}
+        </h1>
+        <div class="buttons">
+          <button class="button icon ion-log-out button-assertive" ng-click="logout()"></button>
+        </div>
+      </ion-header-bar>
+      -->
+      <ion-content>
+
+        <!-- headers -->
+        <div class="sideLogo">
+          <img class="sideLogoImg" src="img/full-white-mini.png" width="180" height="60"/>
+        </div>
+        <div class="sideUserName sideItem">
+          <span class="toggleTitleLeft">
+              Forum
+            </span>
+          <label class="toggle toggle-calm toggle-middle" ng-click="gotoChat($event);">
+            <input type="checkbox">
+            <div class="track">
+              <div class="handle"></div>
+            </div>
+          </label>
+          <span class="inactiveTitle toggleTitleRight">
+            Chat
+          </span>
+        </div>
+        <div class="item sideItem sideUserName" >
+          <img ng-if="username !== undefined && username !== null" ng-src="http://www.gravatar.com/avatar/{{mail}}?s=30&d=identicon"
+               alt="User Avatar" xclass="img-circle" style="border-radius: 100%;"/>
+          <div>
+            <label class="col sideUserNameMain" ng-if="username !== undefined && username !== null" ng-click="showLogoutAction()"><strong>{{'@'+username}}</strong> <span class="icon ion-android-arrow-dropdown"></span> </label>
+            <button ng-if="username == undefined || username == null" ng-click="login()" class="button button-positive button-clear">Login</button>
+          </div>
+        </div>
+
+        <ion-list>
+
+          <!-- Contenido principal de la barra lateral -->
+          <ion-item class="item-positive item-divider item-icon-right">
+            Questions
+            <span class="icon ion-plus-circled" ng-click="newQuestion()"></span>
+          </ion-item>
+
+          <ion-item id="latest" class="sideItem" ng-click="goTo('latest'); $parent.selected='latest';" ng-class="{activeTile: $parent.selected=='latest'}" menu-close>
+            <span class="icon ion-help-circled"></span>
+            Latest Questions
+          </ion-item>
+
+          <ion-item id="viewed" class="sideItem" ng-click="goTo('viewed'); $parent.selected='viewed';" ng-class="{activeTile: $parent.selected=='viewed'}" menu-close>
+            <span class="icon ion-help-circled"></span>
+            Most Viewed
+          </ion-item>
+
+          <ion-item id="voted" class="sideItem" ng-click="goTo('voted'); $parent.selected='voted';" ng-class="{activeTile: $parent.selected=='voted'}" menu-close>
+            <span class="icon ion-help-circled"></span>
+            Most Voted
+          </ion-item>
+
+          <ion-item class="item-positive item-divider">
+            Tags
+          </ion-item>
+
+          <ion-item  id="tags" class="sideItem" ng-click="goTo('tags'); $parent.selected='tags';" ng-class="{activeTile: $parent.selected=='tags'}" menu-close>
+            <span class="icon ion-help-circled"></span>
+            View Tags
+          </ion-item>
+
+
+        </ion-list>
+
+      </ion-content>
+    </ion-side-menu>
+  </ion-side-menus>
+
+</ion-view>

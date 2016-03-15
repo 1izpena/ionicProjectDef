@@ -1,0 +1,133 @@
+<ion-nav-view>
+
+
+  <ion-header-bar class="bar-positive" align-title="center">
+    <div class="buttons">
+      <a class="button button-clear" nav-transition="android" nav-direction="back" ng-click="gotoForum()"><span class="icon icon-left ion-chevron-left"></span> Forum</a>
+    </div>
+    <h1 class="title">
+      Question
+    </h1>
+    <div class="buttons">
+      <button class="button button-small button-balanced icon ion-plus-round" ng-click="answer()">Answer</button>
+    </div>
+  </ion-header-bar>
+
+  <ion-content data-ng-init="getQuestion()">
+
+    <div class="card">
+
+      <div class="item item-divider item-text-wrap row">
+        <h1 class="questiontitle col"><a>{{activeQuestion.title}}</a></h1>
+        <span class="col col-10 col-center" style="text-align: right;">
+          {{activeQuestion.views}} <span class="icon ion-eye"></span>
+        </span>
+      </div>
+
+      <div class="row item-text-wrap">
+
+        <div class="col-20">
+          <button class="votesButton button button-balanced button-clear button-large icon ion-chevron-up voteup" aria-hidden="true" ng-click="questionUpVote()"></button> <br>
+          <span class="votes">{{activeQuestion.votes}}</span> <br>
+          <button class="votesButton button button-assertive button-clear button-large icon ion-chevron-down downvote" aria-hidden="true" ng-click="questionDownVote()"></button>
+        </div>
+
+        <div class="col col-80 col-center">
+          <p data-ng-bind-html="trustAsHtml(activeQuestion.body)" class="bindedBody"></p>
+          <div class="tags">
+            <a ng-repeat="tag in activeQuestion.tags" class="label label-info" href="">{{tag.text}}</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="time col" style="text-align: right;">
+          <span class="glyphicon glyphicon-time pull-right text-muted">Created on {{activeQuestion.created | amDateFormat:'YYYY-MM-DD HH:mm:ss'}} by {{activeQuestion._user.username}}</span>
+        </div>
+      </div>
+
+      <div class="item item-divider item-positive item-text-wrap item-icon-right" ng-click="showQuestionComments = !showQuestionComments;">
+        COMMENTS
+        <span class="icon ion-android-arrow-dropright-circle" ng-show="showQuestionComments == false"></span>
+        <span class="icon ion-android-arrow-dropdown-circle" ng-show="showQuestionComments == true"></span>
+      </div>
+
+      <div class="item item-text-wrap" ng-repeat="comment in activeQuestion.comments | orderBy: '-created'" ng-show="showQuestionComments">
+        <span class="commentbody">{{comment.comment}}</span> <br>
+        <span class="row">
+          <span class="commentdate answerCreated" style="text-align: right;">On {{comment.created | amDateFormat:'YYYY-MM-DD HH:mm:ss'}} by {{comment._user.username}}</span>
+        </span>
+      </div>
+
+
+    </div>
+
+    <div class="card" ng-show="showQuestionComments">
+      <div class="item item-divider item-text-wrap">
+        YOUR COMMENT
+      </div>
+      <textarea class="row questionArea" ng-model="questionComment" placeholder="Comment" rows="8" cols="10" style="border: none; resize: none;"></textarea>
+      <button class="button button-balanced button-block"  ng-click="commentQuestion(questionComment)">Send</button>
+    </div>
+
+    <!-- ANSWERS -->
+    <div class="card list">
+
+      <div class="item item-divider item-text-wrap row">
+        <h2 class="questiontitle col-90"><a>{{activeQuestion.answercount}} Answers</a></h2>
+        <span class="col-10 col-center" style="text-align: center">
+
+        </span>
+      </div>
+
+
+      <div class="answer item-text-wrap" ng-repeat=" answer in activeQuestion.answers">
+
+        <div class="row" >
+
+          <div class="col-20">
+            <button class="votesButton button button-balanced button-clear button-large icon ion-chevron-up voteup" aria-hidden="true" ng-click="answerUpVote($index,answer._id)"></button> <br>
+            <span class="votes">{{answer.votes}}</span> <br>
+            <button class="votesButton button button-assertive button-clear button-large icon ion-chevron-down downvote" aria-hidden="true" ng-click="answerDownVote($index,answer._id)"></button>
+          </div>
+
+          <div class="col col-80 col-center">
+            <p data-ng-bind-html="trustAsHtml(answer.body)" class="bindedBody"></p>
+          </div>
+
+        </div>
+
+        <div class="answer row">
+          <div class="time answerCreated col" style="text-align: right;">
+            <span class="glyphicon glyphicon-time pull-right text-muted">Created on {{answer.created | amDateFormat:'YYYY-MM-DD HH:mm:ss'}} by {{answer._user.username}}</span>
+          </div>
+        </div>
+
+        <div class="item item-divider item-positive item-text-wrap item-icon-right" ng-click="showAnswerComments = !showAnswerComments;">
+          COMMENTS
+          <span class="icon ion-android-arrow-dropright-circle" ng-show="showAnswerComments == false"></span>
+          <span class="icon ion-android-arrow-dropdown-circle" ng-show="showAnswerComments == true"></span>
+        </div>
+
+        <div class="item item-text-wrap" ng-repeat="comment in answer.comments | orderBy: '-created'" ng-show="showAnswerComments">
+          <span class="commentbody">{{comment.comment}}</span> <br>
+        <span class="row answerCreated">
+          <span class="commentdate" style="text-align: right;">On {{comment.created | amDateFormat:'YYYY-MM-DD HH:mm:ss'}} by {{comment._user.username}}</span>
+        </span>
+        </div>
+
+        <div class="card" ng-show="showAnswerComments">
+          <div class="item item-divider item-text-wrap">
+            YOUR COMMENT
+          </div>
+          <textarea class="row answerArea" ng-model="answerComment" placeholder="Comment" rows="8" cols="10" style="border: none; resize: none;"></textarea>
+          <button class="button button-balanced button-block" ng-click="commentAnswer($index, answer._id, answerComment)">Send</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </ion-content>
+</ion-nav-view>

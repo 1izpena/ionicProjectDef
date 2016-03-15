@@ -1,0 +1,48 @@
+<ion-modal-view>
+
+  <ion-header-bar class="bar-positive">
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeShareQuestion()">Close</button>
+    </div>
+    <h1 class="title">
+      Publish
+    </h1>
+  </ion-header-bar>
+
+  <ion-content class="padding">
+
+    <div class="loginFormContainer">
+      <form name="shareQuestionForm" ng-submit="doShareQuestion(sharedQuestion)">
+
+        <div class="card">
+          <div class="item item-divider item-text-wrap">
+            {{questionToShare.title}}
+          </div>
+          <div class="padding">
+            <p data-ng-bind-html="trustAsHtml(questionToShare.text)"></p>
+          </div>
+          <div class="item item-divider item-text-wrap">
+            TAGS
+          </div>
+          <div class="padding">
+            <tags-input type="text" placeholder="Tags" ng-model="sharedQuestion.tags" replace-spaces-with-dashes="false" display-property="text" add-on-space="true" min-length="2" required></tags-input>
+          </div>
+          <div class="padding">
+            <button type="submit" class="button button-block button-balanced" ng-disabled="shareQuestionForm.$invalid">
+              Post
+            </button>
+          </div>
+        </div>
+        <!--
+        <label class="item  item-borderless loginButton">
+          <button type="submit" class="button button-block button-balanced" ng-disabled="answerForm.$invalid">
+            Post
+          </button>
+        </label>
+-->
+      </form>
+    </div>
+
+  </ion-content>
+
+</ion-modal-view>

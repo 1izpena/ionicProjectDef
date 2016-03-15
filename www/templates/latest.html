@@ -1,0 +1,33 @@
+<ion-nav-view>
+
+  <ion-content class="has-header">
+    <div class="list">
+          <div ng-repeat="question in questions | orderBy: '-created'" class="card">
+            <div class="item item-divider item-text-wrap">
+              <h2 class="questiontitle"><a nav-transition="android" nav-direction="forward" ng-click="activeQuestionIndex = $index; goToDetail(question._id)">{{question.title}}</a></h2>
+            </div>
+            <div class="item item-text-wrap">
+              <div class="row">
+                <div class="votesPrincipal"><div class="votes-count"><span class="icon ion-thumbsup"></span> {{question.votes}}</div></div>
+                <div class="answers"><span class="icon ion-chatbox"></span> {{question.answercount}}</div>
+                <div class="views"><span class="icon ion-eye"></span> {{question.views}}</div>
+              </div>
+              <p data-ng-bind-html="trustAsHtml(question.body)" class="bindedBody"></p>
+              <div class="tags row" ng-if="question.tags.length !== 0">
+                <div ng-repeat="tag in question.tags">
+                  <a class="label label-info" ng-if="tag.text">{{tag.text}}</a>
+                </div>
+              </div>
+              <div class=" row">
+                <div class="time col">
+                  <span class="icon ion-ios-clock icon-right text-muted" ></span>
+                  <span am-time-ago="question.created"></span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+    </div>
+  </ion-content>
+
+</ion-nav-view>
