@@ -414,7 +414,7 @@ angular.module('ionicDessiApp.controllers', [])
     }
 
     $scope.gotoAnchor = function (anchor) {
-      $ionicScrollDelegate.scrollTo(0, document.getElementById('56cf0485591482783e6595dc').offsetTop, true);
+      $ionicScrollDelegate.scrollTo(0, document.getElementById(anchor).offsetTop, true);
       //$ionicScrollDelegate.anchorScroll(anchor);
     }
 
@@ -498,11 +498,12 @@ angular.module('ionicDessiApp.controllers', [])
 
     /** new **/
 
-    $scope.changeVisible = function ($index) {
+    $scope.changeVisible = function (message, $index) {
       console.log("cambio visible aaa ");
 
 
       if($scope.messagess[$index].visible == 0){
+        $scope.getMetaTags(message, $index);
         $scope.messagess[$index].visible = 1;
 
 
@@ -512,7 +513,6 @@ angular.module('ionicDessiApp.controllers', [])
         $scope.messagess[$index].visible = 0;
 
       }
-      console.log($scope.messagess[$index].visible );
 
     };
 
@@ -520,135 +520,147 @@ angular.module('ionicDessiApp.controllers', [])
 
 
     $scope.getMetaTags = function (msg, $index) {
-      var url = msg.text;
-      console.log("entro en metatags");
-
-      var userid = window.localStorage.getItem('userid');
-
-      var data = {
-        userid: userid,
-        url: url
-      };
 
 
-      ChatService.getMetaTags(data).then(
-        function(result) {
 
 
-          console.log("esto vale data");
-          console.log(result);
-
-          if(result.data == null){
-            /* si la url no esta soportada */
-            console.log("hay error al coger los metadatos");
-            $scope.messagess[$index].response_data_url = $sce.trustAsHtml( "<h3> No information available </h3>");
-          }
-          else{
+      if($scope.messagess[$index].response_data_url === undefined) {
 
 
-            /* sino tiene tipo es 1 link */
-            if(typeof (result.data.type) == 'undefined'){
-              /* 1 link puede tener imagen o no */
+        var url = msg.text;
+        console.log("entro en metatags");
 
-              var image = '';
-              var tittle = '';
-              var descrip = '';
-              var author_link = '';
-              var keywords = '';
+        var userid = window.localStorage.getItem('userid');
 
-              if(typeof (result.data.title) !== 'undefined') {
-                tittle = "<h3>"+result.data.title+"</h3>";
+        var data = {
+          userid: userid,
+          url: url
+        };
 
-              }
 
-              if(typeof (result.data.description) !== 'undefined') {
-                descrip = "<p>"+result.data.description+"</p>";
+        ChatService.getMetaTags(data).then(
+          function (result) {
 
-              }
 
-              if(typeof (result.data.author) !== 'undefined') {
-                author_link = "<p>From "+result.data.author+"</p>";
+            console.log("esto vale data");
+            console.log(result);
 
-              }
+            if (result.data == null) {
+              /* si la url no esta soportada */
+              console.log("hay error al coger los metadatos");
+              $scope.messagess[$index].response_data_url = $sce.trustAsHtml("<h3> No information available </h3>");
+            }
+            else {
 
-              if(result.data.keywords.length > 0) {
-                for(var i = 0; i<  result.data.keywords.length; i++){
-                  keywords = keywords + "<p><span class='label label-info'>"+result.data.keywords[i]+"</span></p>";
+
+              /* sino tiene tipo es 1 link */
+              if (typeof (result.data.type) == 'undefined') {
+                /* 1 link puede tener imagen o no */
+
+                var image = '';
+                var tittle = '';
+                var descrip = '';
+                var author_link = '';
+                var keywords = '';
+
+                if (typeof (result.data.title) !== 'undefined') {
+                  tittle = "<h3>" + result.data.title + "</h3>";
 
                 }
 
+                if (typeof (result.data.description) !== 'undefined') {
+                  descrip = "<p>" + result.data.description + "</p>";
+
+                }
+
+                if (typeof (result.data.author) !== 'undefined') {
+                  author_link = "<p>From " + result.data.author + "</p>";
+
+                }
+
+                if (result.data.keywords.length > 0) {
+                  for (var i = 0; i < result.data.keywords.length; i++) {
+                    keywords = keywords + "<p><span class='label label-info'>" + result.data.keywords[i] + "</span></p>";
+
+                  }
+
+                }
+
+
+                if (typeof (result.data.image) !== 'undefined') {
+                  image = "<img src=" + result.data.image + ">";
+
+                }
+
+                $scope.messagess[$index].response_data_url = $sce.trustAsHtml(tittle +
+                  descrip +
+                  author_link +
+                  keywords +
+                  image);
+
+
+              }/* end if typeof (result.type) == 'undefined' */
+              /* es 1 video, audio, etc. */
+              else {
+                /* si es video = html
+                 * si es foto url para src de img
+                 * si es rich = html */
+
+                var author = '';
+                var html_img = '';
+                var title2 = '';
+                var provider = '';
+
+                if (typeof (result.data.title) !== 'undefined') {
+                  title2 = "<h3>" + result.data.title + "</h3>";
+                }
+
+
+                if (typeof (result.data.provider_name) !== 'undefined') {
+                  provider = "<p>" + result.data.provider_name + "</p>";
+                }
+
+
+                if (typeof (result.data.author_name) !== 'undefined') {
+                  author = "<p> From " + result.data.author_name + "</p>";
+                }
+
+
+                if (result.data.type == 'video' || result.data.type == 'rich') {
+                  html_img = result.data.html;
+                }
+
+                else if (result.data.type == 'photo') {
+                  html_img = "<img src=" + result.data.url + ">";
+                }
+
+                $scope.messagess[$index].response_data_url = $sce.trustAsHtml(title2 +
+                  provider +
+                  author +
+                  html_img);
+
+
               }
+              /* end else typeof (data.type) == 'undefined' */
+
+            }
 
 
-              if(typeof (result.data.image) !== 'undefined') {
-                image = "<img src=" + result.data.image + ">";
-
-              }
-
-              $scope.messagess[$index].response_data_url = $sce.trustAsHtml( tittle +
-                descrip +
-                author_link +
-                keywords +
-                image);
+            $scope.gotoAnchor(msg.id);
 
 
-            }/* end if typeof (result.type) == 'undefined' */
-            /* es 1 video, audio, etc. */
-            else{
-              /* si es video = html
-               * si es foto url para src de img
-               * si es rich = html */
-
-              var author = '';
-              var html_img = '';
-              var title2 = '';
-              var provider = '';
-
-              if(typeof (result.data.title) !== 'undefined'){
-                title2 = "<h3>"+result.data.title+"</h3>";
-              }
-
-
-              if(typeof (result.data.provider_name) !== 'undefined'){
-                provider = "<p>"+result.data.provider_name+"</p>";
-              }
-
-
-              if(typeof (result.data.author_name) !== 'undefined'){
-                author = "<p> From "+result.data.author_name+"</p>";
-              }
-
-
-              if(result.data.type == 'video' || result.data.type == 'rich'){
-                html_img = result.data.html;
-              }
-
-              else if(result.data.type == 'photo'){
-                html_img = "<img src="+result.data.url+">";
-              }
-
-              $scope.messagess[$index].response_data_url = $sce.trustAsHtml(title2 +
-                provider +
-                author +
-                html_img);
-
-
-            }/* end else typeof (data.type) == 'undefined' */
-
+          },
+          function (error) {
+            // TODO: mostrar error
+            console.log("error getMetaTags");
+            console.log(error);
           }
+        );
 
-
-
-          /*$scope.gotoAnchor(msg.id);*/
-
-
-        },
-        function(error) {
-          // TODO: mostrar error
-          console.log("error getMetaTags");
-          console.log(error);
-        }
-      );
+      }
+      else{
+        console.log("ya se ha cargado");
+      }
 
     };
 

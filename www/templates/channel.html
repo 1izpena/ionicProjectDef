@@ -69,15 +69,29 @@
           <div class="item item-text-wrap" ng-if="message.messageType == 'URL'">
 
 
-
             <div class="item item-button-right">
+
+              <!--
               <a ng-init="getMetaTags(message, $index)" ng-click="loadUrl(message.text)">
                 {{message.text}}
               </a>
-              <!-- ng-click="window.open('{{message.text}}', '_system', 'location=yes'); return false; -->
+
               <button class="button button-clear button-stable" ng-click="changeVisible($index)">
                 <i class="icon ion-android-arrow-dropdown-circle"></i>
               </button>
+
+              -->
+
+              <a ng-click="loadUrl(message.text)">
+                {{message.text}}
+              </a>
+
+              <button class="button button-clear button-stable" ng-click="changeVisible(message, $index)">
+                <i class="icon ion-android-arrow-dropdown-circle"></i>
+              </button>
+
+
+
             </div>
             <!--<div class="metadatalinks" ng-if="message.visible" ng-bind-html="listaMensajes[$index].response_data_url">
             </div>-->
